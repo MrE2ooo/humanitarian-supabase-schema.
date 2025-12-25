@@ -1,0 +1,1 @@
+SELECT * FROM Attendance_Aggregates;
