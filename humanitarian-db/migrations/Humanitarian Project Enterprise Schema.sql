@@ -12,7 +12,7 @@ CREATE SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 -- ============================================================
--- FILE 03: ENUM TYPES
+-- STEP 03: ENUM TYPES
 -- Defines reusable ENUM types for statuses.
 -- ============================================================
 
@@ -258,3 +258,4 @@ LEFT JOIN Attendance a
     ON dr.round_id = a.round_id
 
 GROUP BY dr.round_id, dr.project_id;
+
