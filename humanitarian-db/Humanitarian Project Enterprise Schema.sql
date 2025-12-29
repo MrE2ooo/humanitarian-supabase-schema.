@@ -1,18 +1,18 @@
 -- ============================================================
--- FILE 01: RESET SCHEMA
+-- RESET SCHEMA
 -- Completely wipes the public schema to start fresh.
 -- ============================================================
 
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 -- ============================================================
--- FILE 02: ENABLE EXTENSIONS
+-- ENABLE EXTENSIONS
 -- Enables pgcrypto for encryption.
 -- ============================================================
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 -- ============================================================
--- FILE 03: ENUM TYPES
+-- ENUM TYPES
 -- Defines reusable ENUM types for statuses.
 -- ============================================================
 
@@ -31,7 +31,7 @@ BEGIN
     END IF;
 END$$;
 -- ============================================================
--- FILE 04: CORE TABLES
+-- CORE TABLES
 -- Projects, Beneficiaries, BeneficiaryProjects
 -- ============================================================
 
@@ -63,7 +63,7 @@ CREATE TABLE BeneficiaryProjects (
 CREATE INDEX idx_bp_beneficiary ON BeneficiaryProjects(beneficiary_id);
 CREATE INDEX idx_bp_project ON BeneficiaryProjects(project_id);
 -- ============================================================
--- FILE 05: DISTRIBUTION + COMPLAINTS
+-- DISTRIBUTION + COMPLAINTS
 -- DistributionRounds, Attendance, Complaints
 -- ============================================================
 
@@ -97,7 +97,7 @@ CREATE TABLE Complaints (
     status complaint_status DEFAULT 'pending'
 );
 -- ============================================================
--- FILE 06: FINANCIALS + DOUBLE-SPENDING TRIGGER
+-- FINANCIALS + DOUBLE-SPENDING TRIGGER
 -- ProjectBudgets, Payments, prevent_overspending()
 -- ============================================================
 
@@ -152,7 +152,7 @@ FOR EACH ROW
 WHEN (NEW.approval_status = 'admin_approved')
 EXECUTE FUNCTION prevent_overspending();
 -- ============================================================
--- FILE 07: AUDIT LOG + RLS
+-- AUDIT LOG + RLS
 -- AuditLog table, audit trigger, RLS policies
 -- ============================================================
 
@@ -218,7 +218,7 @@ ON DistributionRounds
 FOR SELECT
 USING (location = get_app_region());
 -- ============================================================
--- FILE 08: MATERIALIZED VIEW + AGGREGATES
+-- MATERIALIZED VIEW + AGGREGATES
 -- Daily summary, financial aggregates, attendance aggregates
 -- ============================================================
 
@@ -256,4 +256,5 @@ SELECT
 FROM DistributionRounds dr
 LEFT JOIN Attendance a
     ON dr.round_id = a.round_id
+
 GROUP BY dr.round_id, dr.project_id;
