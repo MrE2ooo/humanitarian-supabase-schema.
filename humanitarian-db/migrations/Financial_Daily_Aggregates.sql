@@ -1,1 +1,0 @@
-SELECT * FROM Financial_Daily_Aggregates;
